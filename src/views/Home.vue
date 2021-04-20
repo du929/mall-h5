@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <div>你好</div>
+    <div>
+      <i class="iconfont icon-user"></i>
+    </div>
   </div>
 </template>
 
