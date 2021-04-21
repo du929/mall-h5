@@ -1,23 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <transition :name="transitionName">      
       <router-view class="router-view" />    
     </transition>
+    <nav-bar></nav-bar>
+    <!-- <nav-bar v-if="isShowNav"></nav-bar> -->
   </div>
 </template>
 <script>
+import navBar from '@/components/NavBar';
 export default {
   data() {
     return {
       transitionName: "slide-left",
+          isShowNav: true,
+      ShowMenuList: ['/' ,'home', 'category', 'cart', 'user'],//该变量为需要导航栏的数组
     };
   },
+  components: {
+      navBar,
+  },
   watch:{
-     $route(to, from) {      
+     $route(to, from) {   
+       // 通过 ES6 提供的 includes 属性判断 to.path 是否包含在数组内
+       if(this.ShowMenuList.includes(to.path)) {
+         this.isShowNav = true
+       } else {
+         this.isShowNav = false
+       }
        // 由主级到次级      
        // to.meta 能取到 route 路由参数中的 meta 属性      
        if (to.meta.index > from.meta.index) {        
