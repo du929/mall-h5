@@ -3,8 +3,8 @@
     <transition :name="transitionName">      
       <router-view class="router-view" />    
     </transition>
-    <nav-bar></nav-bar>
-    <!-- <nav-bar v-if="isShowNav"></nav-bar> -->
+    <!-- <nav-bar></nav-bar> -->
+    <nav-bar v-if="isShowNav"></nav-bar>
   </div>
 </template>
 <script>
@@ -13,8 +13,8 @@ export default {
   data() {
     return {
       transitionName: "slide-left",
-          isShowNav: true,
-      ShowMenuList: ['/' ,'home', 'category', 'cart', 'user'],//该变量为需要导航栏的数组
+           isShowNav: true,
+      ShowMenuList: ['/' ,'/home', '/category', '/cart', '/user'],//该变量为需要导航栏的数组
     };
   },
   components: {

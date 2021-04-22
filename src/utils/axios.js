@@ -3,8 +3,8 @@ import { Toast } from 'vant'
 
 axios.defaults.baseURL =    
     process.env.NODE_ENV == 'development'        
-        ? '//121.43.231.185:8080/api/v1'        
-        : '//121.43.231.185:8080/api/v1'
+        ? '//localhost:8080/api/v1'        
+        : '//localhost:8080/api/v1'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers['token'] = localStorage.getItem('token') || ''
