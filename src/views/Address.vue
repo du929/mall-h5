@@ -53,16 +53,16 @@ export default {
     },
     methods: {
         onAdd() {
-            this.$$route.push({ path: `address-edit?type=add$from=${this.from}`});
+            this.$router.push({ path: `address-edit?type=add&from=${this.from}`});
         },
         onEdit(item, index) {
-            this.$route.push({
-                path: `address-edit?type=deit$addressId=${item.id}$from=${this.from}`
+            this.$router.push({
+                path: `address-edit?type=edit&addressId=${item.id}&from=${this.from}`,
             });
         },
         select(itme, index) {
             this.$router.push({
-                path: `create-order?addressId=${item.id}$from=${this.from}`,
+                path: `create-order?addressId=${item.id}&from=${this.from}`,
             });
         }
 
