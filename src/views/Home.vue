@@ -1,36 +1,37 @@
-<template>  
-  <div class="home">   
+<template>
+  <div class="home">
     <!-- 顶部导航 -->
-    <header class="home-header wrap">      
+    <header class="home-header wrap" :class="{ active: headerScroll }">
       <!-- 点击搜索框跳转到分类页 -->
-      <router-link tag="i" to="./category"        
-        ><i class="iconfont icon-menu"></i      
-      ></router-link>      
+      <router-link tag="i" to="./category"
+        ><i class="iconfont icon-menu"></i
+      ></router-link>
       <!-- 搜索框 -->
-      <div class="header-search">        
-        <span class="app-name">楼楼商城</span>        
-        <i class="iconfont icon-search"></i>        
-        <router-link tag="span" class="search-title" to="./product-list"          
-          >山河无恙，人间皆安</router-link        
-        >      
-      </div>      
-      <!-- 登录和头像切换 -->
-        <router-link class="login" tag="span" to="./login" v-if="!isLogin"        
-          >登录</router-link     
-        >      
-        <router-link class="login" tag="span" to="./user" v-else>             
-          <van-icon name="manager-o" />      
-        </router-link>    
-      </header>    
-      <swiper :list="swiperList"></swiper>  
-      <!-- 分类栏目 -->   
-      <div class="category-list">      
-        <div v-for="item in categoryList" v-bind:key="item.categoryId">        
-          <img :src="require('../assets/' + item.imgUrl)" />        
-          <span>{{ item.name }}</span>      
-        </div>   
+      <div class="header-search">
+        <span class="app-name">楼楼商城</span>
+        <i class="iconfont icon-search"></i>
+        <router-link tag="span" class="search-title" to="./product-list"
+          >山河无恙，人间皆安</router-link
+        >
       </div>
-      <!-- 新品上线、热门商品、最新推荐 -->
+      <!-- 登录和头像切换 -->
+      <router-link class="login" tag="span" to="./login" v-if="!isLogin"
+        >登录</router-link
+      >
+      <router-link class="login" tag="span" to="./user" v-else>
+        <van-icon name="manager-o" />
+      </router-link>
+    </header>
+    <!-- 轮播图 -->
+    <swiper :list="swiperList"></swiper>
+    <!-- 分类栏目 -->
+    <div class="category-list">
+      <div v-for="item in categoryList" v-bind:key="item.categoryId">
+        <img :src="require('../assets/' + item.imgUrl)" />
+        <span>{{ item.name }}</span>
+      </div>
+    </div>
+    <!-- 新品上线、热门商品、最新推荐 -->
     <div class="good">
       <header class="good-header">新品上线</header>
       <div class="good-box">
@@ -85,20 +86,20 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
-
 <script>
 import { getLocal } from "@/common/js/utils";
 import swiper from "@/components/Swiper";
 import { getHome } from "../service/home";
 import { Toast } from "vant";
-export default {  
-  name: "Home",  
-  data() {    
-    return {      
-      isLogin: false,      
-      swiperList: [],    
+export default {
+  name: "Home",
+  data() {
+    return {
+      headerScroll: false,
+      isLogin: false,
+      swiperList: [],
       categoryList: [
         {
           name: "楼楼交友",
@@ -151,96 +152,105 @@ export default {
           categoryId: 1000010,
         },
       ],
-      hotGoods: [],      
-      newGoods: [],      
+      hotGoods: [],
+      newGoods: [],
       recommendGoods: [],
-    };  
-
-  },  
-  components: {    
-    swiper,  
-  },  
-  
-  async mounted() {    
-    const token = getLocal("token");    
-    if (token) {      
-      this.isLogin = true;    
-    }    
-    Toast.loading({      
-      message: "加载中...",      
-      forbidClick: true,    
-    });    
+    };
+  },
+  components: {
+    swiper,
+  },
+  async mounted() {
+    window.addEventListener("scroll", this.pageScroll);
+    const token = getLocal("token");
+    if (token) {
+      this.isLogin = true;
+    }
+    Toast.loading({
+      message: "加载中...",
+      forbidClick: true,
+    });
     const { data } = await getHome();
     this.swiperList = data.carousels; //轮播图
     this.hotGoods = data.hotGoods; // 热门商品
     this.newGoods = data.newGoods; // 新品上线
     this.recommendGoods = data.recommendGoods; // 最新推荐
   },
+  methods: {
+    pageScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      scrollTop > 100
+        ? (this.headerScroll = true)
+        : (this.headerScroll = false);
+    },
+  },
 };
- 
 </script>
 <style lang="less" scoped>
 @import "../common/style/mixin";
-.home {  
+.home {
   // 吸顶头部样式
-  .home-header {    
-    position: fixed;    
-    left: 0;    
-    top: 0;    
-    .wh(100%, 50px);    
-    .fj();    
-    line-height: 50px;    
-    padding: 0 15px;    
-    .boxSizing();    
-    font-size: 15px;    
-    color: #fff;    
-    z-index: 10000;    
-    .icon-menu {      
-      color: @primary;    
-    }    
-    &.active {      
-      background: @primary;      
-      .icon-menu {        
-        color: #fff;      
-      }      
-      .login {       
-        color: #fff;     
-      }    
+  .home-header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    .wh(100%, 50px);
+    .fj();
+    line-height: 50px;
+    padding: 0 15px;
+    .boxSizing();
+    font-size: 15px;
+    color: #fff;
+    z-index: 10000;
+    .icon-menu {
+      color: @primary;
     }
-    .header-search {      
-      display: flex;      
-      .wh(74%, 20px);      
-      line-height: 20px;     
-      margin: 10px 0;      
-      padding: 5px 0;      
-      color: #232326;      
-      background: rgba(255, 255, 255, 0.7);      
-      border-radius: 20px;      
-      .app-name {        
-        padding: 0 10px;        
-        color: @primary;        
-        font-size: 20px;        
-        font-weight: bold;        
-        border-right: 1px solid #666;      
-      }      
-      .icon-search {        
-        padding: 0 10px;        
-        font-size: 17px;      
-      }      
-      .search-title {        
-        font-size: 12px;        
-        color: #666;        
-        line-height: 21px;      
-      }    
-    }    
-    .login {      
-      color: @primary;      
-      line-height: 52px;      
-      .van-icon-manager-o {        
-        font-size: 20px;        
-        vertical-align: -3px;      
-      }    
-    }  
+    &.active {
+      background: @primary;
+      .nbmenu2 {
+        color: #fff;
+      }
+      .login {
+        color: #fff;
+      }
+    }
+    .header-search {
+      display: flex;
+      .wh(74%, 20px);
+      line-height: 20px;
+      margin: 10px 0;
+      padding: 5px 0;
+      color: #232326;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      .app-name {
+        padding: 0 10px;
+        color: @primary;
+        font-size: 20px;
+        font-weight: bold;
+        border-right: 1px solid #666;
+      }
+      .icon-search {
+        padding: 0 10px;
+        font-size: 17px;
+      }
+      .search-title {
+        font-size: 12px;
+        color: #666;
+        line-height: 21px;
+      }
+    }
+    .login {
+      color: @primary;
+      line-height: 52px;
+      .van-icon-manager-o {
+        font-size: 20px;
+        vertical-align: -3px;
+      }
+    }
   }
   //分类栏目样式
   .category-list {
