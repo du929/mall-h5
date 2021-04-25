@@ -11,8 +11,8 @@ const routes = [
     redirect: 'home',
   },
   {
-    path: '/',
-    name: 'Home',
+    path: '/home',
+    name: 'home',
     component: Home,
     meta: {
       index: 1 //添加meta属性，约定1为第一级
