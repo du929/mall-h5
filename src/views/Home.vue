@@ -1,10 +1,12 @@
 <template>  
   <div class="home">   
+    <!-- 顶部导航 -->
     <header class="home-header wrap">      
+      <!-- 点击搜索框跳转到分类页 -->
       <router-link tag="i" to="./category"        
         ><i class="iconfont icon-menu"></i      
       ></router-link>      
-    
+      <!-- 搜索框 -->
       <div class="header-search">        
         <span class="app-name">楼楼商城</span>        
         <i class="iconfont icon-search"></i>        
@@ -12,6 +14,7 @@
           >山河无恙，人间皆安</router-link        
         >      
       </div>      
+      <!-- 登录和头像切换 -->
         <router-link class="login" tag="span" to="./login" v-if="!isLogin"        
           >登录</router-link     
         >      
@@ -27,6 +30,61 @@
           <span>{{ item.name }}</span>      
         </div>   
       </div>
+      <!-- 新品上线、热门商品、最新推荐 -->
+    <div class="good">
+      <header class="good-header">新品上线</header>
+      <div class="good-box">
+        <div
+          class="good-item"
+          v-for="item in newGoods"
+          :key="item.goodsId"
+          @click="goToDetail(item)"
+        >
+          <img :src="`http://localhost:8080${item.goodsCoverImg}`" />
+          <div class="good-info">
+            <p class="name">{{ item.goodsName }}</p>
+            <p class="subtitle">{{ item.goodsIntro }}</p>
+            <span class="price">￥ {{ item.sellingPrice }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="good">
+      <header class="good-header">热门商品</header>
+      <div class="good-box">
+        <div
+          class="good-item"
+          v-for="item in hotGoods"
+          :key="item.goodsId"
+          @click="goToDetail(item)"
+        >
+          <img :src="`http://localhost:8080${item.goodsCoverImg}`" />
+          <div class="good-info">
+            <p class="name">{{ item.goodsName }}</p>
+            <p class="subtitle">{{ item.goodsIntro }}</p>
+            <span class="price">￥ {{ item.sellingPrice }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="good" :style="{ paddingBottom: '100px' }">
+      <header class="good-header">最新推荐</header>
+      <div class="good-box">
+        <div
+          class="good-item"
+          v-for="item in recommendGoods"
+          :key="item.goodsId"
+          @click="goToDetail(item)"
+        >
+          <img :src="`http://localhost:8080${item.goodsCoverImg}`" />
+          <div class="good-info">
+            <p class="name">{{ item.goodsName }}</p>
+            <p class="subtitle">{{ item.goodsIntro }}</p>
+            <span class="price">￥ {{ item.sellingPrice }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
 </template>
 
@@ -93,6 +151,9 @@ export default {
           categoryId: 1000010,
         },
       ],
+      hotGoods: [],      
+      newGoods: [],      
+      recommendGoods: [],
     };  
 
   },  
@@ -110,7 +171,10 @@ export default {
       forbidClick: true,    
     });    
     const { data } = await getHome();
-    this.swiperList = data.carousels;  
+    this.swiperList = data.carousels; //轮播图
+    this.hotGoods = data.hotGoods; // 热门商品
+    this.newGoods = data.newGoods; // 新品上线
+    this.recommendGoods = data.recommendGoods; // 最新推荐
   },
 };
  
@@ -118,6 +182,7 @@ export default {
 <style lang="less" scoped>
 @import "../common/style/mixin";
 .home {  
+  // 吸顶头部样式
   .home-header {    
     position: fixed;    
     left: 0;    
@@ -192,6 +257,110 @@ export default {
       img {
         .wh(40px, 40px);
         margin: 13px auto 8px auto;
+      }
+    }
+  }
+  .good {
+    .good-header {
+      background: #f9f9f9;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      color: @primary;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .good-box {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      .good-item {
+        .fj();
+        width: 100%;
+        height: 120px;
+        padding: 10px 0;
+        border-bottom: 1px solid #dcdcdc;
+        img {
+          width: 140px;
+          height: 120px;
+          padding: 0 10px;
+          .boxSizing();
+        }
+        .good-info {
+          width: 56%;
+          height: 120px;
+          padding: 5px;
+          text-align: left;
+          .boxSizing();
+          p {
+            margin: 0;
+          }
+          .name {
+            width: 100%;
+            max-height: 40px;
+            line-height: 20px;
+            font-size: 15px;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .subtitle {
+            width: 100%;
+            max-height: 20px;
+            padding: 10px 0;
+            line-height: 25px;
+            font-size: 13px;
+            color: #999;
+            overflow: hidden;
+          }
+          .price {
+            color: @primary;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+  .floor-list {
+    width: 100%;
+    padding-bottom: 50px;
+    .floor-head {
+      width: 100%;
+      height: 40px;
+      background: #f6f6f6;
+    }
+    .floor-content {
+      display: flex;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      width: 100%;
+      .boxSizing();
+      .floor-category {
+        width: 50%;
+        padding: 10px;
+        border-right: 1px solid #dcdcdc;
+        border-bottom: 1px solid #dcdcdc;
+        .boxSizing();
+        &:nth-child(2n) {
+          border-right: none;
+        }
+        p {
+          font-size: 17px;
+          color: #333;
+          &:nth-child(2) {
+            padding: 5px 0;
+            font-size: 13px;
+            color: @primary;
+          }
+        }
+        .floor-products {
+          .fj();
+          width: 100%;
+          img {
+            .wh(65px, 65px);
+          }
+        }
       }
     }
   }
