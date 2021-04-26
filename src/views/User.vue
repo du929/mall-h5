@@ -3,7 +3,7 @@
     <s-header :title="'我的'"></s-header>
     <div class="user-info">
       <div class="info">
-        <img src="../assets/00004.jpg" />
+        <img :src="user.avatar" />
         <div class="user-desc">
           <span>昵称：{{ user.nickName }}</span>
           <span>登录名：{{ user.loginName }}</span>
@@ -34,26 +34,22 @@ export default {
   },
   data() {
     return {
-      user: {
-        loginName: "12312341234",        
-        nickName: "11",        
-        introduceSign: "369",
-      },
+      user: {},
     };
-  },
-  methods: {
-    goBack () {
-      this.$router.go(-1);
-    },
-    goTo(r) {
-      this.$router.push({ path: r });
-    },
   },
   async mounted() {
     // 获取用户信息数据
     const { data } = await getUserInfo();
     // 赋值给 user
     this.user = data;
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    goTo(r) {
+      this.$router.push({ path: r });
+    },
   },
 };
 </script>
