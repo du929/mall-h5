@@ -79,12 +79,6 @@ export default {
       };
     },
     upload() {
-      // let OSS = require("ali-oss");
-      // let client = new OSS({
-      //   region: "oss-cn-hangzhou",
-      //   accessKeyId: "LTAI4G9dDHPToxFZeqPFjAbK",
-      //   accessKeySecret: "YrCmEl7ck8wkH3VdtlYamv9T2UER0H",
-      //   bucket: "mqxu-upload",
       // });
       // let _this = this;
       // async function put() {
@@ -101,9 +95,9 @@ export default {
       let OSS = require("ali-oss");
       let client = new OSS({
         region: "oss-cn-hangzhou",
-        accessKeyId: "***",
-        accessKeySecret: "***",
-        bucket: "mqxu-upload",
+        accessKeyId: "*",
+        accessKeySecret: "",
+        bucket: "",
       });
       let _this = this;
       async function put() {
